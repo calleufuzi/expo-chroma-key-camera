@@ -1,11 +1,11 @@
-import { GraphicsView } from 'expo-graphics';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import { AR, loadTextureAsync, Renderer, THREE } from 'expo-three';
-import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { GraphicsView } from "expo-graphics";
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import { AR, loadTextureAsync, Renderer, THREE } from "expo-three";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import asset from './assets/marker.jpg';
+import asset from "./assets/naturza.png";
 
 const {
   PerspectiveCamera,
@@ -14,7 +14,7 @@ const {
   PointLight,
   Mesh,
   Color,
-  Scene,
+  Scene
 } = THREE;
 
 export default function App() {
@@ -41,7 +41,7 @@ export default function App() {
 
     const material = new ChromaKeyMaterial({
       texture: new AR.BackgroundTexture(renderer),
-      color: new Color(`#ffffff`),
+      color: new Color(`#ffffff`)
     });
 
     const vHeight = height / width;
@@ -75,7 +75,7 @@ export default function App() {
         onResize={onResize}
         isArEnabled
         isArRunningStateEnabled={false}
-        isArCameraStateEnabled={false}
+        isArCameraStateEnabled={true}
       />
       <ImageButton
         image={image}
@@ -108,30 +108,30 @@ function ImageButton({ image, onImage }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   imageWrapper: {
-    position: 'absolute',
-    alignItems: 'stretch',
-    justifyContent: 'flex-end',
+    position: "absolute",
+    alignItems: "stretch",
+    justifyContent: "flex-end",
     bottom: 12,
     right: 12,
     opacity: 0.5,
-    width: '30%',
+    width: "30%"
   },
   image: {
-    maxWidth: '100%',
+    maxWidth: "100%",
     height: 100,
-    resizeMode: 'contain',
-  },
+    resizeMode: "contain"
+  }
 });
 
 async function getImageAsync() {
   const { status } = await Permissions.askAsync(
     Permissions.CAMERA_ROLL,
-    Permissions.CAMERA,
+    Permissions.CAMERA
   );
-  if (status !== 'granted') return;
+  if (status !== "granted") return;
 
   const result = await ImagePicker.launchImageLibraryAsync();
   return result.uri;
@@ -141,13 +141,13 @@ class ChromaKeyMaterial extends ShaderMaterial {
   constructor({ texture, color }) {
     const uniforms = {
       video_texture: {
-        type: 't',
-        value: texture,
+        type: "t",
+        value: texture
       },
       color: {
-        type: 'c',
-        value: color,
-      },
+        type: "c",
+        value: color
+      }
     };
 
     super({
@@ -169,7 +169,7 @@ class ChromaKeyMaterial extends ShaderMaterial {
           mediump vec3 tColor = texture2D(video_texture, vUv).rgb;
           mediump float a = (length(tColor - color) - 0.5) * 7.0;
           gl_FragColor = vec4(tColor, a);
-        }`,
+        }`
     });
   }
 }
